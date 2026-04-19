@@ -12,7 +12,7 @@ Powered by Claude. Built in public. Destined for the world.
 [![Built with](https://img.shields.io/badge/built%20with-Claude-F5B82E?style=flat-square)](https://anthropic.com)
 [![License](https://img.shields.io/badge/license-MIT-10B981?style=flat-square)](./LICENSE)
 
-[Concept Document](./docs/LUMIS_Concept_Document_v2.docx) · [Design System](./design-system/LUMIS_Design_System.html) · [Mockups](./mockups/) · [Roadmap](./ROADMAP.md)
+**[🌐 Explore the live mockups](https://teopolve.github.io/lumis/mockups/01-homepage.html)** · [Concept Document](./docs/LUMIS_Concept_Document_v2.docx) · [Design System](https://teopolve.github.io/lumis/design-system/LUMIS_Design_System.html) · [Roadmap](./ROADMAP.md)
 
 </div>
 
@@ -40,29 +40,20 @@ One mission: *make human knowledge accessible, understandable, and trustworthy f
 
 ## See LUMIS in motion
 
-Four interactive mockups, built with Claude Design, showing what LUMIS will feel like:
+Four interactive mockups, built with Claude Design, showing what LUMIS will feel like.
+**Click each one to explore live in your browser:**
 
-### 01 — Homepage
+### 🏠 [01 — Homepage](https://teopolve.github.io/lumis/mockups/01-homepage.html)
 *The invitation. Zen, editorial, calm.*
 
-Open [`mockups/01-homepage.html`](./mockups/01-homepage.html) in your browser to explore.
-
-### 02 — Answer Page
+### 💡 [02 — Answer Page](https://teopolve.github.io/lumis/mockups/02-answer-page.html)
 *The promise kept. Synthesized answer with cited sources and Trust Score.*
 
-Open [`mockups/02-answer-page.html`](./mockups/02-answer-page.html).
-
-### 03 — Deep Mode
+### 🧠 [03 — Deep Mode](https://teopolve.github.io/lumis/mockups/03-deep-mode.html)
 *The power. Real-time research cockpit analyzing dozens of sources.*
 
-Open [`mockups/03-deep-mode.html`](./mockups/03-deep-mode.html).
-
-### 04 — Perspective Engine
+### ⚖️ [04 — Perspective Engine](https://teopolve.github.io/lumis/mockups/04-perspective-engine.html)
 *The ethics. Constitutional AI applied to search — every viewpoint, equal dignity.*
-
-Open [`mockups/04-perspective-engine.html`](./mockups/04-perspective-engine.html).
-
-> A live hosted version is coming soon via GitHub Pages.
 
 ---
 
@@ -137,7 +128,7 @@ Built with [Claude Code](https://claude.com/claude-code) and [Claude Design](htt
 ## Project status
 
 **Current phase**: Phase 0 — Foundation
-**What exists today**: complete concept document, full design system, 4 interactive mockups
+**What exists today**: complete concept document, full design system, 4 interactive mockups (live!)
 **What's next**: Next.js setup + MVP (Phase 1, starting this week)
 
 See the full [ROADMAP](./ROADMAP.md) for the 10-month development plan across 6 phases.
@@ -149,7 +140,7 @@ See the full [ROADMAP](./ROADMAP.md) for the 10-month development plan across 6 
 ## Documentation
 
 - [**Concept Document v2**](./docs/LUMIS_Concept_Document_v2.docx) — 18 chapters: vision, features, architecture, AI Safety Framework, Constitution, personas, demo scenarios, risks, business model, go-to-market
-- [**Design System**](./design-system/LUMIS_Design_System.html) — open in browser: colors, typography, components, mockup in motion
+- [**Design System (live)**](https://teopolve.github.io/lumis/design-system/LUMIS_Design_System.html) — colors, typography, components, mockup in motion
 - [**CLAUDE.md**](./docs/CLAUDE.md) — context file for Claude Code sessions
 - [**Roadmap**](./ROADMAP.md) — phase-by-phase development plan
 
