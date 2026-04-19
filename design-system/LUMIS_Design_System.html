@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMIS — Design System v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════
+     LUMIS DESIGN TOKENS — fonte di verità per tutto
+     ═══════════════════════════════════════════════════════ */
+  :root {
+    /* Surface / Background */
+    --surface-base: #0B0D12;
+    --surface-raised: #131722;
+    --surface-overlay: #1A1F2E;
+    --surface-hover: #222838;
+
+    /* Text */
+    --text-primary: #F4F4F5;
+    --text-secondary: #A1A1AA;
+    --text-muted: #71717A;
+    --text-subtle: #52525B;
+
+    /* Borders */
+    --border-subtle: #1F2430;
+    --border-default: #27272A;
+    --border-strong: #3F3F46;
+
+    /* Brand Accent — LUMIS (amber glow) */
+    --lumis-50:  #FEF8E7;
+    --lumis-100: #FDEEC4;
+    --lumis-200: #FCDF91;
+    --lumis-300: #FACB58;
+    --lumis-400: #F5B82E;
+    --lumis-500: #F5B82E; /* primary */
+    --lumis-600: #D8971A;
+    --lumis-700: #A47013;
+
+    /* Secondary — Trust Blue */
+    --trust-400: #60A5FA;
+    --trust-500: #3B82F6;
+    --trust-600: #2563EB;
+
+    /* Semantic */
+    --success: #10B981;
+    --warning: #F59E0B;
+    --error:   #EF4444;
+    --info:    #06B6D4;
+
+    /* Spacing scale (4px base) */
+    --s-1: 0.25rem;  /*  4 */
+    --s-2: 0.5rem;   /*  8 */
+    --s-3: 0.75rem;  /* 12 */
+    --s-4: 1rem;     /* 16 */
+    --s-5: 1.5rem;   /* 24 */
+    --s-6: 2rem;     /* 32 */
+    --s-7: 3rem;     /* 48 */
+    --s-8: 4rem;     /* 64 */
+    --s-9: 6rem;     /* 96 */
+    --s-10: 8rem;    /* 128 */
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.25);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,.35);
+    --shadow-glow: 0 0 40px rgba(245,184,46,.15);
+
+    /* Typography */
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-body: 'Geist', -apple-system, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, monospace;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     RESET & BASE
+     ═══════════════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--surface-base);
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     LAYOUT & NAV
+     ═══════════════════════════════════════════════════════ */
+  .shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--s-6);
+  }
+
+  nav.top {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(11, 13, 18, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  nav.top .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-4) 0;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    color: var(--text-primary);
+  }
+
+  .brand .mark {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--lumis-500);
+    margin-right: 2px;
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px var(--lumis-500), 0 0 24px rgba(245,184,46,.4);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 12px var(--lumis-500), 0 0 24px rgba(245,184,46,.4); }
+    50%      { box-shadow: 0 0 20px var(--lumis-500), 0 0 40px rgba(245,184,46,.6); }
+  }
+
+  .version {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════ */
+  .hero {
+    position: relative;
+    padding: var(--s-10) 0 var(--s-9);
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(245,184,46,.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lumis-500);
+    margin-bottom: var(--s-5);
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 900px;
+    margin-bottom: var(--s-6);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--lumis-400);
+  }
+
+  .hero p.lead {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin-bottom: var(--s-7);
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: var(--s-7);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .hero-meta strong {
+    display: block;
+    color: var(--text-primary);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION STRUCTURE
+     ═══════════════════════════════════════════════════════ */
+  section.block {
+    padding: var(--s-9) 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--lumis-500);
+    margin-bottom: var(--s-4);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    margin-bottom: var(--s-4);
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin-bottom: var(--s-7);
+    line-height: 1.6;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     BRAND IDENTITY
+     ═══════════════════════════════════════════════════════ */
+  .brand-showcase {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    padding: var(--s-9) var(--s-7);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brand-showcase::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(245,184,46,.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .logo-big {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 12vw, 9rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    margin-bottom: var(--s-6);
+    position: relative;
+  }
+
+  .logo-big .big-mark {
+    width: 24px;
+    height: 24px;
+    background: var(--lumis-500);
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 40px var(--lumis-500), 0 0 80px rgba(245,184,46,.4);
+    animation: pulse 3s ease-in-out infinite;
+    align-self: center;
+  }
+
+  .tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--lumis-400);
+    margin-bottom: var(--s-4);
+  }
+
+  .brand-story {
+    max-width: 580px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     COLOR PALETTE
+     ═══════════════════════════════════════════════════════ */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--s-3);
+    margin-bottom: var(--s-6);
+  }
+
+  .swatch {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    transition: transform .2s ease;
+    cursor: pointer;
+  }
+
+  .swatch:hover { transform: translateY(-2px); }
+
+  .swatch-color {
+    height: 120px;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--s-3);
+    position: relative;
+  }
+
+  .swatch-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: rgba(0,0,0,.35);
+    padding: 3px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+  }
+
+  .swatch-meta {
+    padding: var(--s-3);
+    background: var(--surface-raised);
+  }
+
+  .swatch-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .palette-group {
+    margin-bottom: var(--s-7);
+  }
+
+  .palette-group h3 {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: var(--s-4);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     TYPOGRAPHY
+     ═══════════════════════════════════════════════════════ */
+  .type-spec {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--s-6);
+    margin-bottom: var(--s-4);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--s-5);
+    align-items: end;
+  }
+
+  .type-sample {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: right;
+    line-height: 1.8;
+    white-space: nowrap;
+  }
+
+  .type-meta span { color: var(--text-primary); }
+
+  .t-display-xl {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+
+  .t-display-lg {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .t-display-md {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .t-h1 { font-size: 2.25rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
+  .t-h2 { font-size: 1.75rem; font-weight: 600; line-height: 1.2; }
+  .t-h3 { font-size: 1.25rem; font-weight: 500; line-height: 1.3; }
+  .t-body { font-size: 1rem; line-height: 1.6; }
+  .t-small { font-size: 0.875rem; line-height: 1.5; color: var(--text-secondary); }
+  .t-mono { font-family: var(--font-mono); font-size: 0.875rem; color: var(--lumis-400); }
+
+  /* ═══════════════════════════════════════════════════════
+     COMPONENTS
+     ═══════════════════════════════════════════════════════ */
+  .component-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+
+  .cbox {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--s-6);
+  }
+
+  .cbox-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: var(--s-5);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .cbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all .15s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--lumis-500);
+    color: #1A0F00;
+  }
+
+  .btn-primary:hover {
+    background: var(--lumis-400);
+    box-shadow: 0 0 0 4px rgba(245,184,46,.15);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface-overlay);
+    border-color: var(--text-muted);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+  }
+
+  .btn-ghost:hover {
+    background: var(--surface-overlay);
+    color: var(--text-primary);
+  }
+
+  .btn-trust {
+    background: var(--trust-500);
+    color: white;
+  }
+
+  .btn-trust:hover { background: var(--trust-400); }
+
+  /* Search input */
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    background: var(--surface-overlay);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-full);
+    padding: 14px 22px;
+    transition: all .2s ease;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--lumis-500);
+    box-shadow: 0 0 0 4px rgba(245,184,46,.1);
+  }
+
+  .search-box svg { flex-shrink: 0; color: var(--text-muted); }
+
+  .search-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+  }
+
+  .search-box input::placeholder { color: var(--text-muted); }
+
+  .search-box .kbd {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    background: var(--surface-base);
+    border: 1px solid var(--border-default);
+    border-radius: 4px;
+    color: var(--text-muted);
+  }
+
+  /* Trust Score Badge */
+  .trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  .trust-high {
+    background: rgba(16,185,129,.15);
+    color: var(--success);
+    border: 1px solid rgba(16,185,129,.3);
+  }
+
+  .trust-med {
+    background: rgba(245,158,11,.15);
+    color: var(--warning);
+    border: 1px solid rgba(245,158,11,.3);
+  }
+
+  .trust-low {
+    background: rgba(239,68,68,.15);
+    color: var(--error);
+    border: 1px solid rgba(239,68,68,.3);
+  }
+
+  .trust-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* Source Chip */
+  .source-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--surface-overlay);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all .15s ease;
+  }
+
+  .source-chip:hover {
+    border-color: var(--lumis-500);
+    color: var(--text-primary);
+  }
+
+  .source-chip .favicon {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: var(--text-muted);
+  }
+
+  .source-chip .num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--lumis-500);
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    padding: 3px 9px;
+    background: var(--surface-overlay);
+    border: 1px solid var(--border-default);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     MOCKUP — LUMIS search in action
+     ═══════════════════════════════════════════════════════ */
+  .mockup {
+    background: var(--surface-base);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xl);
+    padding: var(--s-7);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mockup::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(245,184,46,.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .mockup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--s-6);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .mockup-query {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--s-5);
+    color: var(--text-primary);
+  }
+
+  .mockup-query em {
+    font-style: italic;
+    color: var(--lumis-400);
+  }
+
+  .answer-block {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--s-6);
+    position: relative;
+    margin-bottom: var(--s-5);
+  }
+
+  .answer-block::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: var(--s-6);
+    bottom: var(--s-6);
+    width: 3px;
+    background: linear-gradient(180deg, var(--lumis-500), transparent);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .answer-header {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .answer-header .icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--lumis-500);
+    box-shadow: 0 0 12px rgba(245,184,46,.5);
+  }
+
+  .answer-text {
+    color: var(--text-primary);
+    line-height: 1.75;
+    font-size: 1.02rem;
+    margin-bottom: var(--s-5);
+  }
+
+  .answer-text sup {
+    color: var(--lumis-500);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    margin: 0 2px;
+    cursor: pointer;
+  }
+
+  .sources-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     DESIGN PRINCIPLES
+     ═══════════════════════════════════════════════════════ */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--s-4);
+  }
+
+  .principle {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--s-6);
+    transition: all .2s ease;
+  }
+
+  .principle:hover {
+    border-color: var(--lumis-500);
+    transform: translateY(-2px);
+  }
+
+  .principle-num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 3rem;
+    color: var(--lumis-500);
+    line-height: 1;
+    margin-bottom: var(--s-3);
+  }
+
+  .principle h4 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin-bottom: var(--s-2);
+    color: var(--text-primary);
+  }
+
+  .principle p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SPACING SCALE
+     ═══════════════════════════════════════════════════════ */
+  .spacing-scale { display: flex; flex-direction: column; gap: var(--s-3); }
+
+  .space-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-3);
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+  }
+
+  .space-viz { background: var(--lumis-500); height: 8px; border-radius: 2px; }
+
+  .space-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    min-width: 120px;
+  }
+
+  .space-meta strong {
+    color: var(--text-primary);
+    margin-right: var(--s-3);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════ */
+  footer {
+    margin-top: var(--s-10);
+    padding: var(--s-8) 0;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+  }
+
+  footer p {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: var(--s-2);
+  }
+
+  footer .big-logo {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--s-4);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .type-spec { grid-template-columns: 1fr; }
+    .type-meta { text-align: left; }
+    .hero-meta { flex-direction: column; gap: var(--s-3); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+     ═══════════════════════════════════════════════════════ -->
+<nav class="top">
+  <div class="shell">
+    <div class="inner">
+      <div class="brand"><span class="mark"></span>lumis</div>
+      <span class="version">DESIGN SYSTEM · v1.0</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="hero">
+    <div class="eyebrow">Design Language · Aprile 2026</div>
+    <h1>The design system<br>that <em>illuminates</em> the way<br>users find knowledge.</h1>
+    <p class="lead">
+      Una lingua visiva costruita sulla chiarezza editoriale, sull'intelligenza calma e sulla luce
+      come metafora centrale. Ogni colore, ogni font, ogni pixel esiste per una ragione.
+    </p>
+    <div class="hero-meta">
+      <div>Autore<strong>Matteo</strong></div>
+      <div>Versione<strong>1.0 — Foundation</strong></div>
+      <div>Tema<strong>Editorial Dark</strong></div>
+      <div>Font System<strong>Instrument Serif + Geist</strong></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     BRAND
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="brand">
+    <div class="section-label">01 · Brand Identity</div>
+    <h2 class="section-title">Il marchio LUMIS</h2>
+    <p class="section-desc">
+      LUMIS deriva dal latino <em>lumen</em> — luce. Il marchio si costruisce attorno a un unico gesto:
+      il punto luminoso. Una lampada che illumina la conoscenza. Il punto è sempre ambra,
+      sempre vivo, sempre pulsante — come se dentro ci fosse qualcosa di acceso.
+    </p>
+
+    <div class="brand-showcase">
+      <div class="logo-big">
+        <span class="big-mark"></span>lumis
+      </div>
+      <div class="tagline">Illuminate your search.</div>
+      <p class="brand-story">
+        Il wordmark si presenta sempre in minuscolo — umile, accessibile, non grida.
+        La lettera iniziale è preceduta dal punto-lampada, mai saldato al testo: ha sempre
+        il suo spazio per respirare, per brillare. Tipografia editoriale serif,
+        perché LUMIS è uno strumento di pensiero, non un'app consumer.
+      </p>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     COLORS
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="colors">
+    <div class="section-label">02 · Color System</div>
+    <h2 class="section-title">Palette</h2>
+    <p class="section-desc">
+      Un sistema a due accenti: <em>ambra</em> (il colore della luce, della scoperta, del marchio)
+      e <em>blu</em> (il colore della fiducia, dei dati, delle fonti). Tutto il resto è
+      scala di grigi profondi, studiati per sessioni di lettura lunghe senza affaticare l'occhio.
+    </p>
+
+    <div class="palette-group">
+      <h3>Surfaces — le superfici</h3>
+      <div class="color-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0B0D12"><span class="swatch-label">surface-base</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Base</div><div class="swatch-hex">#0B0D12</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#131722"><span class="swatch-label">surface-raised</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Raised</div><div class="swatch-hex">#131722</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1A1F2E"><span class="swatch-label">surface-overlay</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Overlay</div><div class="swatch-hex">#1A1F2E</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#222838"><span class="swatch-label">surface-hover</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Hover</div><div class="swatch-hex">#222838</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Brand — Lumis Amber (l'anima)</h3>
+      <div class="color-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FEF8E7"><span class="swatch-label" style="color:#000;background:rgba(255,255,255,.5)">lumis-50</span></div>
+          <div class="swatch-meta"><div class="swatch-name">50 · Mist</div><div class="swatch-hex">#FEF8E7</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FDEEC4"><span class="swatch-label" style="color:#000;background:rgba(255,255,255,.5)">lumis-100</span></div>
+          <div class="swatch-meta"><div class="swatch-name">100 · Halo</div><div class="swatch-hex">#FDEEC4</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FACB58"><span class="swatch-label" style="color:#000;background:rgba(255,255,255,.5)">lumis-300</span></div>
+          <div class="swatch-meta"><div class="swatch-name">300 · Dawn</div><div class="swatch-hex">#FACB58</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F5B82E; box-shadow: 0 0 40px rgba(245,184,46,.3)"><span class="swatch-label" style="color:#000;background:rgba(255,255,255,.5)">lumis-500 ★</span></div>
+          <div class="swatch-meta"><div class="swatch-name">500 · Core</div><div class="swatch-hex">#F5B82E</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#D8971A"><span class="swatch-label">lumis-600</span></div>
+          <div class="swatch-meta"><div class="swatch-name">600 · Deep</div><div class="swatch-hex">#D8971A</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#A47013"><span class="swatch-label">lumis-700</span></div>
+          <div class="swatch-meta"><div class="swatch-name">700 · Ember</div><div class="swatch-hex">#A47013</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Trust Blue — per dati, fonti, verifiche</h3>
+      <div class="color-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#60A5FA"><span class="swatch-label">trust-400</span></div>
+          <div class="swatch-meta"><div class="swatch-name">400 · Light</div><div class="swatch-hex">#60A5FA</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#3B82F6"><span class="swatch-label">trust-500</span></div>
+          <div class="swatch-meta"><div class="swatch-name">500 · Core</div><div class="swatch-hex">#3B82F6</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#2563EB"><span class="swatch-label">trust-600</span></div>
+          <div class="swatch-meta"><div class="swatch-name">600 · Deep</div><div class="swatch-hex">#2563EB</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Semantic — segnali funzionali</h3>
+      <div class="color-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#10B981"><span class="swatch-label">success</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Success · High Trust</div><div class="swatch-hex">#10B981</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F59E0B"><span class="swatch-label">warning</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Warning · Medium Trust</div><div class="swatch-hex">#F59E0B</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#EF4444"><span class="swatch-label">error</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Error · Low Trust</div><div class="swatch-hex">#EF4444</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#06B6D4"><span class="swatch-label">info</span></div>
+          <div class="swatch-meta"><div class="swatch-name">Info</div><div class="swatch-hex">#06B6D4</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TYPOGRAPHY
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="type">
+    <div class="section-label">03 · Typography</div>
+    <h2 class="section-title">La voce di LUMIS</h2>
+    <p class="section-desc">
+      Due famiglie tipografiche in dialogo: <em>Instrument Serif</em> per il display
+      (titoli, headline, momenti editoriali) e <em>Geist</em> per il body (testo, UI, dati).
+      La serif dà autorevolezza — LUMIS è uno strumento serio. Il sans-serif dà modernità.
+    </p>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-display-xl">Illuminate your search.</div></div>
+      <div class="type-meta">
+        <span>Instrument Serif</span><br>80px / 1.0<br>letter-spacing: -0.03em<br>weight: 400
+      </div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-display-lg">Il motore di ricerca <em style="font-style:italic;color:var(--lumis-400)">intelligente</em></div></div>
+      <div class="type-meta">
+        <span>Instrument Serif</span><br>56px / 1.05<br>letter-spacing: -0.025em
+      </div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-display-md">Scopri invece di cercare.</div></div>
+      <div class="type-meta">
+        <span>Instrument Serif</span><br>40px / 1.1
+      </div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-h1">Come funziona il Trust Score</div></div>
+      <div class="type-meta"><span>Geist 600</span><br>36px / 1.15</div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-h2">Fonti verificate e citate</div></div>
+      <div class="type-meta"><span>Geist 600</span><br>28px / 1.2</div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-h3">Sezione · sottotitolo</div></div>
+      <div class="type-meta"><span>Geist 500</span><br>20px / 1.3</div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-body">
+        Il testo di corpo usa Geist, una sans-serif geometrica moderna con un'ottima
+        leggibilità a lungo termine. La line-height generosa (1.6) permette sessioni
+        di ricerca estese senza affaticare l'occhio.
+      </div></div>
+      <div class="type-meta"><span>Geist 400</span><br>16px / 1.6</div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-small">Metadati, didascalie, testo secondario — 14px.</div></div>
+      <div class="type-meta"><span>Geist 400</span><br>14px / 1.5</div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-sample"><div class="t-mono">trust_score: 0.94 · sources: 24 · verified</div></div>
+      <div class="type-meta"><span>Geist Mono</span><br>14px / 1.5</div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SPACING
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="space">
+    <div class="section-label">04 · Spacing</div>
+    <h2 class="section-title">Il respiro</h2>
+    <p class="section-desc">
+      Scala a base 4px. Lo spazio è un ingrediente primo: LUMIS respira, non affolla.
+      Preferire sempre uno step più grande quando sei in dubbio.
+    </p>
+
+    <div class="spacing-scale">
+      <div class="space-item"><div class="space-meta"><strong>s-1</strong>4px</div><div class="space-viz" style="width:4px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-2</strong>8px</div><div class="space-viz" style="width:8px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-3</strong>12px</div><div class="space-viz" style="width:12px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-4</strong>16px</div><div class="space-viz" style="width:16px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-5</strong>24px</div><div class="space-viz" style="width:24px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-6</strong>32px</div><div class="space-viz" style="width:32px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-7</strong>48px</div><div class="space-viz" style="width:48px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-8</strong>64px</div><div class="space-viz" style="width:64px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-9</strong>96px</div><div class="space-viz" style="width:96px"></div></div>
+      <div class="space-item"><div class="space-meta"><strong>s-10</strong>128px</div><div class="space-viz" style="width:128px"></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     COMPONENTS
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="comps">
+    <div class="section-label">05 · Components</div>
+    <h2 class="section-title">Libreria componenti</h2>
+    <p class="section-desc">
+      I mattoni ricorrenti di LUMIS. Ogni componente esiste per servire un bisogno preciso.
+      Nessuna decorazione gratuita.
+    </p>
+
+    <div class="component-grid">
+
+      <div class="cbox">
+        <div class="cbox-label">Buttons</div>
+        <div class="cbox-row">
+          <button class="btn btn-primary">Cerca</button>
+          <button class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+            Inizia ricerca
+          </button>
+          <button class="btn btn-secondary">Annulla</button>
+          <button class="btn btn-ghost">Più opzioni</button>
+          <button class="btn btn-trust">Verifica fonte</button>
+        </div>
+      </div>
+
+      <div class="cbox">
+        <div class="cbox-label">Search Input · il cuore di LUMIS</div>
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" placeholder="Chiedi a LUMIS qualunque cosa — risponderà con le fonti.">
+          <span class="kbd">⌘ K</span>
+        </div>
+      </div>
+
+      <div class="cbox">
+        <div class="cbox-label">Trust Score Badges</div>
+        <div class="cbox-row">
+          <span class="trust-badge trust-high"><span class="trust-dot"></span>Alta affidabilità · 0.94</span>
+          <span class="trust-badge trust-med"><span class="trust-dot"></span>Media affidabilità · 0.72</span>
+          <span class="trust-badge trust-low"><span class="trust-dot"></span>Da verificare · 0.41</span>
+        </div>
+      </div>
+
+      <div class="cbox">
+        <div class="cbox-label">Source Chips · citazioni cliccabili</div>
+        <div class="cbox-row">
+          <a class="source-chip"><span class="num">1</span><span class="favicon" style="background:#4A9EFF"></span>Nature.com</a>
+          <a class="source-chip"><span class="num">2</span><span class="favicon" style="background:#F5B82E"></span>nytimes.com</a>
+          <a class="source-chip"><span class="num">3</span><span class="favicon" style="background:#10B981"></span>who.int</a>
+          <a class="source-chip"><span class="num">4</span><span class="favicon" style="background:#EF4444"></span>reuters.com</a>
+        </div>
+      </div>
+
+      <div class="cbox">
+        <div class="cbox-label">Tags & Labels</div>
+        <div class="cbox-row">
+          <span class="tag">DEEP MODE</span>
+          <span class="tag">VERIFIED</span>
+          <span class="tag">PEER-REVIEWED</span>
+          <span class="tag">2025</span>
+          <span class="tag">EN / IT / FR</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MOCKUP
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="mockup">
+    <div class="section-label">06 · In action</div>
+    <h2 class="section-title">LUMIS in movimento</h2>
+    <p class="section-desc">
+      Un esempio reale di come i componenti si combinano in un momento di ricerca.
+      Questa non è ancora l'app: è l'atmosfera.
+    </p>
+
+    <div class="mockup">
+      <div class="mockup-header">
+        <div class="brand"><span class="mark"></span>lumis</div>
+        <div class="cbox-row" style="gap:var(--s-3)">
+          <span class="tag">DEEP MODE</span>
+          <span class="trust-badge trust-high"><span class="trust-dot"></span>24 fonti verificate</span>
+        </div>
+      </div>
+
+      <div class="mockup-query">
+        <em>Come</em> sta evolvendo la ricerca sull'Alzheimer nel 2026?
+      </div>
+
+      <div class="answer-block">
+        <div class="answer-header">
+          <span class="icon"></span>
+          <span>Risposta sintetizzata · 1.4s · verificata</span>
+        </div>
+        <div class="answer-text">
+          Nel 2026, la ricerca sull'Alzheimer si è concentrata su tre direzioni principali.
+          Il <strong>lecanemab</strong>, approvato dalla FDA nel 2023, ha mostrato una riduzione
+          del declino cognitivo del 27% in pazienti con malattia in fase iniziale<sup>1</sup>.
+          Parallelamente, nuovi biomarcatori ematici stanno rivoluzionando la diagnosi precoce,
+          rendendo possibile identificare la patologia anni prima della comparsa dei sintomi<sup>2,3</sup>.
+          Infine, studi recenti pubblicati su Nature suggeriscono un legame tra microbioma
+          intestinale e neuroinfiammazione cerebrale<sup>4</sup>, aprendo una direzione terapeutica inedita.
+        </div>
+        <div class="sources-row">
+          <a class="source-chip"><span class="num">1</span><span class="favicon" style="background:#4A9EFF"></span>fda.gov</a>
+          <a class="source-chip"><span class="num">2</span><span class="favicon" style="background:#F5B82E"></span>nature.com</a>
+          <a class="source-chip"><span class="num">3</span><span class="favicon" style="background:#10B981"></span>nejm.org</a>
+          <a class="source-chip"><span class="num">4</span><span class="favicon" style="background:#EF4444"></span>thelancet.com</a>
+          <a class="source-chip" style="color:var(--lumis-400);border-color:var(--lumis-600)">+ 20 altre fonti</a>
+        </div>
+      </div>
+
+      <div class="cbox-row" style="gap:var(--s-3)">
+        <button class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+          Continua la ricerca
+        </button>
+        <button class="btn btn-secondary">Esporta Synthesis Report</button>
+        <button class="btn btn-ghost">Vedi timeline storica</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PRINCIPLES
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="principles">
+    <div class="section-label">07 · Design Principles</div>
+    <h2 class="section-title">I 6 principi non negoziabili</h2>
+    <p class="section-desc">
+      Ogni scelta progettuale — da una icona a una transizione — deve rispondere a questi sei principi.
+      Se un dettaglio li viola, si riparte.
+    </p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <h4>Chiarezza prima dell'estetica</h4>
+        <p>Se un elemento è bello ma confonde, si elimina. LUMIS serve per capire, non per stupire.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <h4>La luce è l'anima</h4>
+        <p>L'accento ambra appare solo dove c'è "illuminazione": risultati chiave, azioni primarie, marchio. Mai decorativo.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <h4>Tipografia editoriale</h4>
+        <p>LUMIS è uno strumento di pensiero. La serif display ricorda un quotidiano di qualità, non una startup.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <h4>Respiro generoso</h4>
+        <p>Lo spazio bianco non è vuoto, è architettura. Sempre preferire uno step di spazio in più.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <h4>Movimento intenzionale</h4>
+        <p>Le animazioni servono a guidare l'attenzione. Mai gratuite, mai più lunghe di 300ms salvo scopi narrativi.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">06</div>
+        <h4>Nessun trucco AI-slop</h4>
+        <p>Niente gradienti viola, niente icone 3D, niente glassmorphism ovunque. LUMIS è specifico, non generico.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MOTION
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <section class="block" id="motion">
+    <div class="section-label">08 · Motion</div>
+    <h2 class="section-title">Principi di animazione</h2>
+    <p class="section-desc">
+      Curve di movimento specifiche, durata calibrata. Nessuna animazione supera i 400ms
+      salvo narrazioni intenzionali (es. apparizione di una risposta).
+    </p>
+
+    <div class="component-grid">
+      <div class="cbox">
+        <div class="cbox-label">Durate standard</div>
+        <div class="cbox-row" style="gap: var(--s-5); font-family: var(--font-mono); font-size:.85rem">
+          <div><span style="color:var(--lumis-500)">hover</span> · 150ms</div>
+          <div><span style="color:var(--lumis-500)">fade</span> · 200ms</div>
+          <div><span style="color:var(--lumis-500)">slide</span> · 300ms</div>
+          <div><span style="color:var(--lumis-500)">reveal</span> · 400ms</div>
+          <div><span style="color:var(--lumis-500)">synthesis</span> · 800-1400ms</div>
+        </div>
+      </div>
+      <div class="cbox">
+        <div class="cbox-label">Easing</div>
+        <div class="cbox-row" style="gap: var(--s-5); font-family: var(--font-mono); font-size:.85rem">
+          <div><span style="color:var(--lumis-500)">default</span> · cubic-bezier(.25, .1, .25, 1)</div>
+          <div><span style="color:var(--lumis-500)">bounce</span> · cubic-bezier(.68, -.55, .27, 1.55)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════ -->
+<div class="shell">
+  <footer>
+    <div class="big-logo"><span class="brand"><span class="mark"></span>lumis</span></div>
+    <p>Design System v1.0 · Aprile 2026</p>
+    <p>Built with light. For those who seek.</p>
+  </footer>
+</div>
+
+</body>
+</html>
